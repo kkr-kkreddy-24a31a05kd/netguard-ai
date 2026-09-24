@@ -39,6 +39,7 @@ class Settings(BaseSettings):
     BACKEND_CORS_ORIGINS: List[str] = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
+        "https://kkr-kkreddy-24a31a05kd.github.io",
     ]
 
     @field_validator("BACKEND_CORS_ORIGINS", mode="before")
@@ -55,7 +56,11 @@ class Settings(BaseSettings):
                 pass
         elif isinstance(v, list):
             return [str(item) for item in v]
-        return ["http://localhost:5173", "http://127.0.0.1:5173"]
+        return [
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+            "https://kkr-kkreddy-24a31a05kd.github.io",
+        ]
 
     HOST: str = "0.0.0.0"
     PORT: int = 8000
