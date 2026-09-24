@@ -1,3 +1,12 @@
+def test_root_endpoint(client):
+    """Test root / endpoint returns service information and health link."""
+    response = client.get("/")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "ok"
+    assert "NetGuard AI" in data["service"]
+
+
 def test_root_health_check(client):
     """Test root health endpoint returns exact expected JSON payload."""
     response = client.get("/health")

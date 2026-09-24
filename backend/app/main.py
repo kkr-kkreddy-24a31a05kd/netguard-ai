@@ -20,6 +20,18 @@ app = FastAPI(
 # Apply CORS middleware
 setup_cors(app)
 
+# Root level service info endpoint: GET / -> {"status": "ok", ...}
+@app.get("/", tags=["Root"], summary="Root Service Information")
+def root():
+    return {
+        "status": "ok",
+        "service": "NetGuard AI Backend API",
+        "version": "1.0.0",
+        "health": "/health",
+        "docs": "/docs",
+    }
+
+
 # Root level health endpoint: GET /health -> {"status": "ok"}
 @app.get("/health", tags=["Health"], summary="Root Health Check")
 def root_health():
