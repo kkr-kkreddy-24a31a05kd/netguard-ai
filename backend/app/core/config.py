@@ -1,5 +1,5 @@
 from typing import List, Union
-from pydantic import field_validator
+from pydantic import field_validator, Field, AliasChoices
 from pydantic_settings import BaseSettings, SettingsConfigDict
 import json
 
@@ -11,13 +11,29 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
 
     # Security & JWT
-    SECRET_KEY: str = "netguard-super-secret-jwt-key-change-in-production-2026"
-    ALGORITHM: str = "HS256"
+    SECRET_KEY: str = Field(
+        default="netguard-super-secret-jwt-key-change-in-production-2026",
+        validation_alias=AliasChoices("SECRET_KEY", "JWT_SECRET_KEY"),
+    )
+    ALGORITHM: str = Field(
+        default="HS256",
+        validation_alias=AliasChoices("ALGORITHM", "JWT_ALGORITHM"),
+    )
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
 
     # Database Configuration
-    # Defaults to PostgreSQL, with automatic SQLite fallback for local testing/dev if postgres is offline
     DATABASE_URL: str = "sqlite:///./netguard.db"
+
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def assemble_db_url(cls, v: str) -> str:
+        if isinstance(v, str):
+            # Render PostgreSQL connection strings typically start with postgres://
+            if v.startswith("postgres://"):
+                return v.replace("postgres://", "postgresql+psycopg2://", 1)
+            elif v.startswith("postgresql://") and not v.startswith("postgresql+"):
+                return v.replace("postgresql://", "postgresql+psycopg2://", 1)
+        return v
 
     # CORS Configuration
     BACKEND_CORS_ORIGINS: List[str] = [
