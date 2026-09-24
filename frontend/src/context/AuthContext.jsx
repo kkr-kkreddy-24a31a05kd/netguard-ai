@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
+import { API_BASE_URL } from '../utils/apiConfig'
 
 const AuthContext = createContext(null)
 
@@ -7,7 +8,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+  const apiBase = API_BASE_URL
 
   // Fetch current user details on load if token exists
   useEffect(() => {

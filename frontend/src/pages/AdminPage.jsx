@@ -19,6 +19,7 @@ import Button from '../components/common/Button'
 import Badge from '../components/common/Badge'
 import Input from '../components/common/Input'
 import { useAuth } from '../context/AuthContext'
+import { API_BASE_URL } from '../utils/apiConfig'
 
 export default function AdminPage() {
   const { user } = useAuth()
@@ -41,9 +42,9 @@ export default function AdminPage() {
       const headers = { Authorization: `Bearer ${token}` }
 
       const [usersRes, auditRes, cfgRes] = await Promise.all([
-        fetch('http://localhost:8000/api/v1/admin/users', { headers }),
-        fetch('http://localhost:8000/api/v1/admin/audit-logs?limit=50', { headers }),
-        fetch('http://localhost:8000/api/v1/admin/system-config', { headers }),
+        fetch(`${API_BASE_URL}/api/v1/admin/users`, { headers }),
+        fetch(`${API_BASE_URL}/api/v1/admin/audit-logs?limit=50`, { headers }),
+        fetch(`${API_BASE_URL}/api/v1/admin/system-config`, { headers }),
       ])
 
       if (usersRes.ok) {
@@ -73,7 +74,7 @@ export default function AdminPage() {
     setErrMsg('')
     try {
       const token = localStorage.getItem('netguard_token')
-      const res = await fetch(`http://localhost:8000/api/v1/admin/users/${userId}/role`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/admin/users/${userId}/role`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -98,7 +99,7 @@ export default function AdminPage() {
     setErrMsg('')
     try {
       const token = localStorage.getItem('netguard_token')
-      const res = await fetch(`http://localhost:8000/api/v1/admin/users/${userId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/admin/users/${userId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -119,7 +120,7 @@ export default function AdminPage() {
     setErrMsg('')
     try {
       const token = localStorage.getItem('netguard_token')
-      const res = await fetch('http://localhost:8000/api/v1/admin/system-config', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/admin/system-config`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

@@ -28,6 +28,7 @@ import Sidebar from '../components/layout/Sidebar'
 import Card from '../components/common/Card'
 import Button from '../components/common/Button'
 import Badge from '../components/common/Badge'
+import { API_BASE_URL } from '../utils/apiConfig'
 
 export default function AdvancedAnalyticsPage() {
   const [timeline, setTimeline] = useState([])
@@ -44,11 +45,11 @@ export default function AdvancedAnalyticsPage() {
       const headers = { Authorization: `Bearer ${token}` }
 
       const [tlRes, hmRes, patRes, relRes, intelRes] = await Promise.all([
-        fetch('http://localhost:8000/api/v1/advanced-analytics/timeline?hours=24', { headers }),
-        fetch('http://localhost:8000/api/v1/advanced-analytics/heatmap', { headers }),
-        fetch('http://localhost:8000/api/v1/advanced-analytics/patterns', { headers }),
-        fetch('http://localhost:8000/api/v1/advanced-analytics/relationships?limit=8', { headers }),
-        fetch('http://localhost:8000/api/v1/advanced-analytics/intel', { headers }),
+        fetch(`${API_BASE_URL}/api/v1/advanced-analytics/timeline?hours=24`, { headers }),
+        fetch(`${API_BASE_URL}/api/v1/advanced-analytics/heatmap`, { headers }),
+        fetch(`${API_BASE_URL}/api/v1/advanced-analytics/patterns`, { headers }),
+        fetch(`${API_BASE_URL}/api/v1/advanced-analytics/relationships?limit=8`, { headers }),
+        fetch(`${API_BASE_URL}/api/v1/advanced-analytics/intel`, { headers }),
       ])
 
       if (tlRes.ok) setTimeline(await tlRes.json())
@@ -71,7 +72,7 @@ export default function AdvancedAnalyticsPage() {
     setExporting(true)
     try {
       const token = localStorage.getItem('netguard_token')
-      const res = await fetch('http://localhost:8000/api/v1/advanced-analytics/report/csv?limit=1000', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/advanced-analytics/report/csv?limit=1000`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (res.ok) {
@@ -95,7 +96,7 @@ export default function AdvancedAnalyticsPage() {
     setExporting(true)
     try {
       const token = localStorage.getItem('netguard_token')
-      const res = await fetch('http://localhost:8000/api/v1/advanced-analytics/report/json', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/advanced-analytics/report/json`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (res.ok) {

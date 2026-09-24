@@ -27,10 +27,11 @@ import Modal from '../components/common/Modal'
 import Alert from '../components/common/Alert'
 import StatCard from '../components/feedback/StatCard'
 import LoadingState from '../components/feedback/LoadingState'
+import { API_BASE_URL } from '../utils/apiConfig'
 
 export default function NetworkTrafficPage() {
   const { token } = useAuth()
-  const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+  const apiBase = API_BASE_URL
 
   // Flows state
   const [flows, setFlows] = useState([])

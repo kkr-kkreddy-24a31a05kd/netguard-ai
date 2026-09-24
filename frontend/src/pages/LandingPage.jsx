@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { API_DOCS_URL } from '../utils/apiConfig'
 import {
   ShieldAlert,
   Activity,
@@ -329,7 +330,7 @@ export default function LandingPage() {
               UI Design System
             </Link>
             <a
-              href="http://localhost:8000/docs"
+              href={API_DOCS_URL}
               target="_blank"
               rel="noreferrer"
               className="hover:text-slate-300 transition-colors"

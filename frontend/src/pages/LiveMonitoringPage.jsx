@@ -32,6 +32,7 @@ import Sidebar from '../components/layout/Sidebar'
 import Card from '../components/common/Card'
 import Button from '../components/common/Button'
 import Badge from '../components/common/Badge'
+import { API_BASE_URL, getWebSocketUrl } from '../utils/apiConfig'
 
 const PIE_COLORS = ['#ef4444', '#06b6d4', '#a855f7', '#3b82f6', '#10b981']
 
@@ -54,7 +55,7 @@ export default function LiveMonitoringPage() {
     const token = localStorage.getItem('netguard_token')
     if (!token) return
 
-    const wsUrl = `ws://localhost:8000/api/v1/realtime/ws/live-traffic?token=${token}`
+    const wsUrl = `${getWebSocketUrl('/api/v1/realtime/ws/live-traffic')}?token=${token}`
     const ws = new WebSocket(wsUrl)
     wsRef.current = ws
 
@@ -131,7 +132,7 @@ export default function LiveMonitoringPage() {
     } else {
       // Fallback to REST control endpoints
       const token = localStorage.getItem('netguard_token')
-      fetch(`http://localhost:8000/api/v1/realtime/simulation/${action}`, {
+      fetch(`${API_BASE_URL}/api/v1/realtime/simulation/${action}`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

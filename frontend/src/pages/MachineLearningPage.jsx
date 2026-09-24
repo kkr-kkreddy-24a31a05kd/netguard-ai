@@ -23,6 +23,7 @@ import Button from '../components/common/Button'
 import Badge from '../components/common/Badge'
 import Input from '../components/common/Input'
 import { useAuth } from '../context/AuthContext'
+import { API_BASE_URL } from '../utils/apiConfig'
 
 export default function MachineLearningPage() {
   const { user } = useAuth()
@@ -55,8 +56,8 @@ export default function MachineLearningPage() {
       const headers = { Authorization: `Bearer ${token}` }
 
       const [statusRes, modelsRes] = await Promise.all([
-        fetch('http://localhost:8000/api/v1/ml/status', { headers }),
-        fetch('http://localhost:8000/api/v1/ml/models', { headers }),
+        fetch(`${API_BASE_URL}/api/v1/ml/status`, { headers }),
+        fetch(`${API_BASE_URL}/api/v1/ml/models`, { headers }),
       ])
 
       if (statusRes.ok) {
@@ -85,7 +86,7 @@ export default function MachineLearningPage() {
     setErrorMsg('')
     try {
       const token = localStorage.getItem('netguard_token')
-      const res = await fetch('http://localhost:8000/api/v1/ml/train', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/ml/train`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -168,7 +169,7 @@ export default function MachineLearningPage() {
     setErrorMsg('')
     try {
       const token = localStorage.getItem('netguard_token')
-      const res = await fetch('http://localhost:8000/api/v1/ml/predict', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/ml/predict`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

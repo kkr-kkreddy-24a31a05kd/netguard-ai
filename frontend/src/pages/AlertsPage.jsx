@@ -18,6 +18,7 @@ import Sidebar from '../components/layout/Sidebar'
 import Card from '../components/common/Card'
 import Button from '../components/common/Button'
 import Badge from '../components/common/Badge'
+import { API_BASE_URL } from '../utils/apiConfig'
 
 export default function AlertsPage() {
   const [alerts, setAlerts] = useState([])
@@ -34,13 +35,13 @@ export default function AlertsPage() {
       const token = localStorage.getItem('netguard_token')
       const headers = { Authorization: `Bearer ${token}` }
 
-      let url = 'http://localhost:8000/api/v1/alerts?limit=50'
+      let url = `${API_BASE_URL}/api/v1/alerts?limit=50`
       if (statusFilter !== 'ALL') url += `&status=${statusFilter}`
       if (severityFilter !== 'ALL') url += `&severity=${severityFilter}`
 
       const [alertsRes, statsRes] = await Promise.all([
         fetch(url, { headers }),
-        fetch('http://localhost:8000/api/v1/alerts/statistics', { headers }),
+        fetch(`${API_BASE_URL}/api/v1/alerts/statistics`, { headers }),
       ])
 
       if (alertsRes.ok) {
@@ -65,7 +66,7 @@ export default function AlertsPage() {
     setActionLoading(true)
     try {
       const token = localStorage.getItem('netguard_token')
-      const res = await fetch(`http://localhost:8000/api/v1/alerts/${alertId}/acknowledge`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/alerts/${alertId}/acknowledge`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -88,7 +89,7 @@ export default function AlertsPage() {
     setActionLoading(true)
     try {
       const token = localStorage.getItem('netguard_token')
-      const res = await fetch(`http://localhost:8000/api/v1/alerts/${alertId}/resolve`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/alerts/${alertId}/resolve`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${token}` },
       })

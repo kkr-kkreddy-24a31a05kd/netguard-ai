@@ -4,6 +4,7 @@ import { Shield, ExternalLink, Menu, X, LogIn, LogOut, LayoutDashboard, UserChec
 import Button from '../common/Button'
 import Badge from '../common/Badge'
 import { useAuth } from '../../context/AuthContext'
+import { API_BASE_URL, API_DOCS_URL } from '../../utils/apiConfig'
 
 export default function Navbar() {
   const location = useLocation()
@@ -14,8 +15,7 @@ export default function Navbar() {
   useEffect(() => {
     const checkBackend = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
-        const res = await fetch(`${apiUrl}/health`)
+        const res = await fetch(`${API_BASE_URL}/health`)
         if (res.ok) {
           const data = await res.json()
           if (data.status === 'ok') {
@@ -132,7 +132,7 @@ export default function Navbar() {
             )}
 
             <a
-              href="http://localhost:8000/docs"
+              href={API_DOCS_URL}
               target="_blank"
               rel="noreferrer"
             >

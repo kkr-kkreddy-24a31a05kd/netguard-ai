@@ -33,6 +33,7 @@ import Sidebar from '../components/layout/Sidebar'
 import Card from '../components/common/Card'
 import Button from '../components/common/Button'
 import Badge from '../components/common/Badge'
+import { API_BASE_URL } from '../utils/apiConfig'
 
 const SEVERITY_COLORS = {
   CRITICAL: '#ef4444',
@@ -72,15 +73,15 @@ export default function ThreatAnalyticsPage() {
         protoRes,
         detRes,
       ] = await Promise.all([
-        fetch('http://localhost:8000/api/v1/analytics/overview', { headers }),
-        fetch('http://localhost:8000/api/v1/analytics/attack-distribution', { headers }),
-        fetch('http://localhost:8000/api/v1/analytics/severity-breakdown', { headers }),
-        fetch('http://localhost:8000/api/v1/analytics/attack-trends', { headers }),
-        fetch('http://localhost:8000/api/v1/analytics/top-sources', { headers }),
-        fetch('http://localhost:8000/api/v1/analytics/top-destinations', { headers }),
-        fetch('http://localhost:8000/api/v1/analytics/protocol-statistics', { headers }),
+        fetch(`${API_BASE_URL}/api/v1/analytics/overview`, { headers }),
+        fetch(`${API_BASE_URL}/api/v1/analytics/attack-distribution`, { headers }),
+        fetch(`${API_BASE_URL}/api/v1/analytics/severity-breakdown`, { headers }),
+        fetch(`${API_BASE_URL}/api/v1/analytics/attack-trends`, { headers }),
+        fetch(`${API_BASE_URL}/api/v1/analytics/top-sources`, { headers }),
+        fetch(`${API_BASE_URL}/api/v1/analytics/top-destinations`, { headers }),
+        fetch(`${API_BASE_URL}/api/v1/analytics/protocol-statistics`, { headers }),
         fetch(
-          `http://localhost:8000/api/v1/analytics/detections?limit=15${
+          `${API_BASE_URL}/api/v1/analytics/detections?limit=15${
             selectedSeverity !== 'ALL' ? `&severity=${selectedSeverity}` : ''
           }`,
           { headers }
@@ -120,7 +121,7 @@ export default function ThreatAnalyticsPage() {
     setStatusMsg('Running ML inference & anomaly scoring on ingested flows...')
     try {
       const token = localStorage.getItem('netguard_token')
-      const res = await fetch('http://localhost:8000/api/v1/analytics/analyze-batch?limit=500', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/analytics/analyze-batch?limit=500`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       })
